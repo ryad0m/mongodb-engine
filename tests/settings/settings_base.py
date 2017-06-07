@@ -2,12 +2,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django_mongodb_engine',
         'NAME': 'test',
-        'OPTIONS': {'OPERATIONS': {}}
+        'OPTIONS': {'OPERATIONS': {}},
+        'PORT': '27017',
     },
     'other': {
         'ENGINE': 'django_mongodb_engine',
-        'NAME': 'test2'
-    },
+        'NAME': 'test2',
+        'PORT': '27017',
+},
 }
 
 SERIALIZATION_MODULES = {'json': 'settings.serializer'}
