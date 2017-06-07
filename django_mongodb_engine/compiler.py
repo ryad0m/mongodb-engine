@@ -77,14 +77,6 @@ NEGATED_OPERATORS_MAP = {
 }
 
 
-def _split_db_type(db_type):
-    try:
-        db_type, db_subtype = db_type.split(':', 1)
-    except ValueError:
-        db_subtype = None
-    return db_type, db_subtype
-
-
 def safe_call(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -158,8 +150,6 @@ class MongoQuery(NonrelQuery):
 
 
     def _build_mongo_query(self, filters, mongo_query=None):
-        #children = self._get_children(filters.children)
-
         if filters.negated:
             self._negated = not self._negated
 
@@ -171,18 +161,13 @@ class MongoQuery(NonrelQuery):
 
         if filters.negated:
             self._negated = not self._negated
-
         if mongo_query:
             mongo_conditions.append(mongo_query)
-
         if not mongo_conditions:
             return {}
-
         if len(mongo_conditions) == 1:
             return mongo_conditions[0]
-
         return {('$or' if connector == OR else '$and'): mongo_conditions}
-
 
     def _convert_filters(self, filters):
         for child in filters:
