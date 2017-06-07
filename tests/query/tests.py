@@ -233,7 +233,7 @@ class BasicQueryTests(TestCase):
         self.assertEqual(
             Post.objects.filter(title__startswith='T', title__contains=' ')
                         .filter(content__startswith='C')
-                        .get(~Q(content__contains='Y',
+                        .get(~Q(content__contains='e',
                                 content__icontains='B')),
             Post.objects.all()[0])
 
@@ -289,6 +289,10 @@ class BasicQueryTests(TestCase):
         self.assertEqual(
             Blog.objects.filter().exclude(~Q(title='blog')).get(),
             blogs[0])
+        self.assertEqualLists(
+            Blog.objects.filter(~(Q(title__endswith=' blog') & Q(title__endswith='blog'))),
+            [blogs[0]]
+        )
 
     def test_exclude_plus_filter(self):
         objs = [IntegerModel.objects.create(integer=i) for i in (1, 2, 3, 4)]
