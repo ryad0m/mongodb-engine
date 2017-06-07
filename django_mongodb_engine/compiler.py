@@ -212,6 +212,8 @@ class MongoQuery(NonrelQuery):
             if self._negated:
                 if lookup_type in NEGATED_OPERATORS_MAP:
                     op_func = NEGATED_OPERATORS_MAP[lookup_type]
+                else:
+                    op_func = lambda val: {'$not': OPERATORS_MAP[lookup_type](val)}
             else:
                 op_func = OPERATORS_MAP[lookup_type]
 
